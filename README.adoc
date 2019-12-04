@@ -1,0 +1,17 @@
+= Advent of Code
+
+As always, I'm late to the party and when I arrive, I cannot get enough.
+
+In late 2019, my friend https://twitter.com/ralfdmueller[Ralf] asked me whether I want to participate both in https://adventofcode.com[Advent of Code] and on his community site https://aoc-2019.netlify.com[aoc2019].
+My short answer was "No" due to time constraints and being focussed on other things in 2019 than extracurricular programming.
+
+But than https://xkcd.com/356/[this] happened and it hit me real good.
+
+I contributed all examples and accompanying READMEs for 2019 originally on Ralf's site. 
+Please check it out, it's an outstanding community effort for Ralf.
+
+My personal goal: Have some fun doing programming in various languages, learn and teach something new.
+
+The folders are sorted by year, day and language.
+
+This project here is licensed as a whole under Apache License 2.0 (in contrast Ralf's community site which is MIT).
