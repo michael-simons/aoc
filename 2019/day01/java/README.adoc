@@ -76,3 +76,4 @@ They are not a replacement for real tests, but for this solution, they are good 
 I'm quite positve suprised that a modern Java solution is a readable 13 lines.
 
 NOTE: Tested with `java version "11.0.1" 2018-10-16 LTS`
+      Correct solutions are: `3511949` and `5265045`

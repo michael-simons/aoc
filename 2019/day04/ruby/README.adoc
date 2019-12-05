@@ -36,3 +36,4 @@ The regex `/((\d)\2+)/` needs some explanation: It consists of two capturing gro
 That was way easier for me than day 3.
 
 NOTE: Tested with `ruby 2.6.3p62`
+      Correct solutions are: `1955` and `1319`

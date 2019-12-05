@@ -59,3 +59,4 @@ SELECT sum(fuel) from fuel_for_fuel;
 Because? It's fun.
 
 NOTE: Tested with `postgres:12.1`
+      Correct solutions are: `3511949` and `5265045`

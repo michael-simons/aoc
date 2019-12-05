@@ -5,3 +5,4 @@
 Run with `scala Solution.scala`.
 
 NOTE: Tested with `Scala code runner version 2.13.1`
+      Correct solutions are: `291` and `159`
