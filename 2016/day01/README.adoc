@@ -1,6 +1,7 @@
 :tags: case classes, pattern matching, folds
 
-== https://adventofcode.com/2016/day/1[Day 1: No Time for a Taxicab]
+== https://adventofcode.com/2016/day/1[No Time for a Taxicab]
 
 Run with `scala Solution.scala`.
-Tested with Scala 2.13.1.
+
+NOTE: Tested with `Scala code runner version 2.13.1`
