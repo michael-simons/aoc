@@ -7,50 +7,36 @@ Why not solving the thing with SQL?
 
 I did this with PostgreSQL, which supports https://www.postgresql.org/docs/11/queries-with.html[recursive common table expressions].
 
-First, change into the directory of this solution, bring up a Docker container running the latest PostgreSQL version, copy the `input.txt` into it and get a bash shell:
+First, change into the directory of this solution, bring up a Docker container running the latest PostgreSQL version, copy the `input.txt` into it, create an `aoc` database and finally login:
 
 [source,console]
 ----
 docker run -d -p 5432:5432  --name postgres1 postgres:12.1
 docker cp input.txt postgres1:/tmp/
-docker exec -it postgres1 bash
+docker exec -it postgres1 createdb -U postgres aoc # <1>
+docker exec -it postgres1 psql -U postgres aoc
 ----
-
-From there, we create a database and login:
-
-[source,console]
-----
-createdb -U postgres aoc
-psql -U postgres aoc
-----
+<1> Create a `aoc` database
 
 First, create a table and load the data:
 
 [source,sql]
 ----
-CREATE TABLE modules(mass INTEGER);
-COPY modules(mass) FROM '/tmp/input.txt';
+include::prepare.sql[]
 ----
 
 First star is trivial:
 
 [source,sql]
 ----
-SELECT sum(mass/3-2) FROM modules;
+include::star1.sql[]
 ----
 
 Second star is fun:
 
 [source,sql]
 ----
-WITH RECURSIVE fuel_for_fuel(fuel) AS ( -- <1>
-  SELECT mass/3-2 from modules -- <2>
-  UNION ALL
-  SELECT * FROM ( -- <3>
-    SELECT fuel/3-2 AS fuel FROM fuel_for_fuel
-  ) hlp WHERE fuel > 0
-)
-SELECT sum(fuel) from fuel_for_fuel;
+include::star2.sql[]
 ----
 <1> Declare a recursive common table expression
 <2> Define the initial value
@@ -59,4 +45,4 @@ SELECT sum(fuel) from fuel_for_fuel;
 Because? It's fun.
 
 NOTE: Tested with `postgres:12.1`
-      Correct solutions are: `3511949` and `5265045`
+      Correct solutions are: `3511949` and `5265045`.
