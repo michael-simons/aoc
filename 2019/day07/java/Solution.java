@@ -72,32 +72,32 @@ public class Solution {
 
 		private Optional<Integer> executeInstruction(int ptr) {
 			int opcode = memory[ptr] % 100;
-			int[] modes = extractModes(memory[ptr]);
+			int[] modes = extractModes(memory[ptr++]);
 			return switch (opcode) {
 				case 1, 2 -> {
-					var p1 = load(memory[++ptr], modes[0]);
-					var p2 = load(memory[++ptr], modes[1]);
-					store(memory[++ptr], numericOperations.get(opcode).apply(p1, p2));
-					yield executeInstruction(++ptr);
+					var p1 = load(memory[ptr++], modes[0]);
+					var p2 = load(memory[ptr++], modes[1]);
+					store(memory[ptr++], numericOperations.get(opcode).apply(p1, p2));
+					yield executeInstruction(ptr);
 				}
 				case 3 -> {
-					store(memory[++ptr], read().get());
-					yield executeInstruction(++ptr);
+					store(memory[ptr++], read().get());
+					yield executeInstruction(ptr);
 				}
 				case 4 -> {
-					write(load(memory[++ptr], modes[0]));
-					yield Optional.of(++ptr);
+					write(load(memory[ptr++], modes[0]));
+					yield Optional.of(ptr);
 				}
 				case 5, 6 -> {
-					var p1 = load(memory[++ptr], modes[0]);
-					var p2 = load(memory[++ptr], modes[1]);
-					yield executeInstruction(conditions.get(opcode).apply(p1) ? p2 : ++ptr);
+					var p1 = load(memory[ptr++], modes[0]);
+					var p2 = load(memory[ptr++], modes[1]);
+					yield executeInstruction(conditions.get(opcode).apply(p1) ? p2 : ptr);
 				}
 				case 7, 8 -> {
-					var p1 = load(memory[++ptr], modes[0]);
-					var p2 = load(memory[++ptr], modes[1]);
-					store(memory[++ptr], comparisons.get(opcode).apply(p1, p2) ? 1 : 0);
-					yield executeInstruction(++ptr);
+					var p1 = load(memory[ptr++], modes[0]);
+					var p2 = load(memory[ptr++], modes[1]);
+					store(memory[ptr++], comparisons.get(opcode).apply(p1, p2) ? 1 : 0);
+					yield executeInstruction(ptr);
 				}
 				case 99 -> Optional.empty();
 				default -> throw new IllegalArgumentException(String.format("Invalid opcode %d", opcode));
