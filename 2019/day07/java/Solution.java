@@ -126,7 +126,7 @@ public class Solution {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> Stream<List<T>> permutations(Collection<T> v) {
+	private static <T> Stream<List<T>> permutationsOf(Collection<T> v) {
 		return permuteImpl((T[]) v.toArray(), v.size());
 	}
 
@@ -182,7 +182,7 @@ public class Solution {
 			return input.get();
 		};
 
-		permutations(IntStream.rangeClosed(0, 4).mapToObj(Optional::of).collect(toList()))
+		permutationsOf(IntStream.rangeClosed(0, 4).mapToObj(Optional::of).collect(toList()))
 			.map(p -> IntStream.rangeClosed(0, p.size() - 1)
 				.mapToObj(i -> Map.entry(Computer.loadProgram(instructions), p.get(i))).collect(toList()))
 			.parallel()
@@ -190,7 +190,7 @@ public class Solution {
 			.max(Integer::compareTo)
 			.ifPresent(d -> System.out.println(String.format("Star two %d", d)));
 
-		permutations(IntStream.rangeClosed(5, 9).mapToObj(Optional::of).collect(toList()))
+		permutationsOf(IntStream.rangeClosed(5, 9).mapToObj(Optional::of).collect(toList()))
 			.parallel()
 			.map(phases -> {
 				var computers = IntStream.rangeClosed(0, phases.size() - 1)
