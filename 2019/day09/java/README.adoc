@@ -2,7 +2,7 @@
 
 Say Intcode computer one more time…
 
-image::https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdAW5nKwh3r08tCA7V87AVTm9d9CvS8vM1vU7XcOat6_7jGF0z&s[]
+image::https://media.giphy.com/media/Nblm6OgpcuvZe/giphy.gif[]
 
 Anyway.
 
