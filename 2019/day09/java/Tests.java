@@ -34,13 +34,23 @@ public class Tests {
 				53L, 55L, 53L, 4L, 53L, 1001L, 56L, -1L, 56L, 1005L, 56L, 6L, 99L, 0L, 0L, 0L, 0L, 10L))
 			.amplifyWithFeedback() == 18216;
 
-
 		var instructions = Files.readAllLines(Path.of("../../day07/java/input.txt")).stream()
 			.flatMap(s -> Arrays.stream(s.split(",")))
 			.map(String::trim)
 			.map(Long::parseLong)
 			.collect(toList());
-        assert new AmplificationCircuit(instructions).amplify() == 92663L;
-        assert new AmplificationCircuit(instructions).amplifyWithFeedback() == 14365052L;
+		var amplifier = new AmplificationCircuit(instructions);
+		assert amplifier.amplify() == 92663L;
+		assert amplifier.amplifyWithFeedback() == 14365052L;
+		
+		instructions = Files.readAllLines(Path.of("input.txt")).stream()
+			.flatMap(s -> Arrays.stream(s.split(",")))
+			.map(String::trim)
+			.map(Long::parseLong)
+			.collect(toList());
+
+		var computer = Solution.Computer.loadProgram(instructions);
+		assert computer.pipe(1L).run().head().equals(Optional.of(3601950151L));
+		assert computer.pipe(2L).run().head().equals(Optional.of(64236L));
 	}
 }

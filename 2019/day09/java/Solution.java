@@ -33,7 +33,7 @@ public class Solution {
 		// end::memorySpace[]
 		private Optional<Long> next;
 
-		private int base = 0;
+		private long base = 0L;
 
 		private final Map<Integer, BiFunction<Long, Long, Long>> numericOperations = Map.of(
 			1, (a, b) -> a + b,
@@ -61,6 +61,11 @@ public class Solution {
 		}
 
 		public Computer run() {
+			
+			return this.run(true);
+		}
+
+		public Computer run(boolean resetAfterHalt) {
 
 			while (next.isPresent()) {
 				try {
@@ -68,6 +73,12 @@ public class Solution {
 				} catch (InputRequiredException e) {
 					break;
 				}
+			}
+			
+			if (!next.isPresent() && resetAfterHalt) {
+				this.memory.clear();
+				this.next = Optional.of(0L);
+				this.base = 0L;
 			}
 			return this;
 		}
@@ -195,7 +206,6 @@ public class Solution {
 		computer.pipe(1L).run().head()
 			.ifPresent(d -> System.out.println(String.format("Star one %d", d)));
 
-		computer = Computer.loadProgram(instructions);
 		computer.pipe(2L).run().head()
 			.ifPresent(d -> System.out.println(String.format("Star two %d", d)));
 	}

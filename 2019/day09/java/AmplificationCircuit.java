@@ -22,11 +22,9 @@ final class AmplificationCircuit {
 
 	long amplify() {
 
-		return permutationsOf(LongStream.rangeClosed(0, 4).mapToObj(Optional::of).collect(toList()))
-			.map(p -> IntStream.rangeClosed(0, p.size() - 1)
-				.mapToObj(i -> Map.entry(Solution.Computer.loadProgram(instructions), p.get(i))).collect(toList()))
-			.parallel()
-			.map(s -> runSequence(0L, s))
+		var initialPhasesAndComputers = LongStream.rangeClosed(0, 4).mapToObj(i -> Map.entry(Solution.Computer.loadProgram(instructions), Optional.of(i))).collect(toList());
+		return permutationsOf(initialPhasesAndComputers)
+			.map(s -> runSequence(true, 0L, s))
 			.max(Long::compareTo)
 			.get();
 	}
@@ -48,7 +46,7 @@ final class AmplificationCircuit {
 				var lastOutput = new AtomicLong(0);
 				while (nextRun.get()) {
 					var sequence = computers.stream().map(c -> Map.entry(c, phaseSupplier.get())).collect(toList());
-					lastOutput.set(runSequence(lastOutput.get(), sequence));
+					lastOutput.set(runSequence(false, lastOutput.get(), sequence));
 				}
 				return lastOutput.get();
 			})
@@ -101,14 +99,14 @@ final class AmplificationCircuit {
 		return builder.build();
 	}
 
-	private static Long runSequence(Long initialInput,
+	private static Long runSequence(boolean b, Long initialInput,
 		List<Map.Entry<Solution.Computer, Optional<Long>>> sequence) {
 		AtomicLong input = new AtomicLong(initialInput);
 		for (var computerAndPhase : sequence) {
 			var c = computerAndPhase.getKey();
 			c.pipe(input.get());
 			computerAndPhase.getValue().ifPresent(c::pipe);
-			input.set(c.run().drain().stream().findFirst().get());
+			input.set(c.run(b).drain().stream().findFirst().get());
 		}
 		return input.get();
 	}

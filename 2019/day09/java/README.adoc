@@ -41,8 +41,10 @@ Output can be accessed via `head()` or `drain()`:
 include::Solution.java[tags=usingNewIo]
 ----
 
-I changed this from day 7, so that I can use the amplication circuit with todays computer.
+I changed this from day 7, so that I can use the amplification circuit with todays computer.
 Todays computer should not halt after it produced output, in my day 7 solution, it needed to halt.
+By introducing a `reset` operation, I was also able to reduce reloading of the program by a magnitude for the amplification without feedback.
+
 
 IMPORTANT: Biggest challenge today?
 Can you spot the https://github.com/michael-simons/aoc/commit/0b533bcf45dd5e3ea874586260852eaff52403dc[bug] in my day 7 solution? Well, I couldn't for some time.
@@ -55,4 +57,4 @@ NOTE: Run with `java --source 13 --enable-preview Solution.java`.
       Tested with `java version "13" 2019-09-17`, correct solutions are: `3601950151` and `64236`.
       +
       Tests and day 7 can be run from here with the following command: (they need to be compiled beforehand):
-      `rm *.class && javac --source 13 --enable-preview *.java && java --enable-preview -ea Tests`
+      `javac --source 13 --enable-preview *.java && java --enable-preview -ea Tests`
