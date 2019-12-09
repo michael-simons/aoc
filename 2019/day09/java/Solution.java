@@ -99,7 +99,7 @@ public class Solution {
 
 		public Optional<Long> head() {
 
-			return Optional.of(this.stdOut.poll());
+			return Optional.ofNullable(this.stdOut.poll());
 		}
 
 		// end::usingNewIo[]
