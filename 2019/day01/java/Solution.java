@@ -1,5 +1,3 @@
-package aoc2019;
-
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

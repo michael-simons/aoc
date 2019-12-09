@@ -1,5 +1,3 @@
-package aoc2019;
-
 import static java.util.stream.Collectors.*;
 
 import java.io.IOException;
