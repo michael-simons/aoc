@@ -45,7 +45,7 @@ I changed this from day 7, so that I can use the amplication circuit with todays
 Todays computer should not halt after it produced output, in my day 7 solution, it needed to halt.
 
 IMPORTANT: Biggest challenge today?
-Can you spot the bug in my day 7 solution? Well, I couldn't for some time.
+Can you spot the https://github.com/michael-simons/aoc/commit/0b533bcf45dd5e3ea874586260852eaff52403dc[bug] in my day 7 solution? Well, I couldn't for some time.
 There's one tiny, little instruction that just didn't get hit on day 7.
 Well, now it does.
 
