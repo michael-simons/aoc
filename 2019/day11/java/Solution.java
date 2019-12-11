@@ -304,14 +304,14 @@ public class Solution {
 		return sb.toString();
 	}
 	// end::painting[]
-	
+
 	// Not so much relevant to the puzzle but for animating it
 	interface Event<T> {
 		Panel getPanel();
 
 		T getAttribute();
 	}
-	
+
 	abstract static class AbstractEvent<T> implements Event<T> {
 		final Panel panel;
 
@@ -382,9 +382,10 @@ public class Solution {
 
 		var currentView = View.NORTH;
 		var currentPanel = startPanel.getKey();
+		var currentColor = startPanel.getValue();
 
 		// Need to initialize the start color
-		handler.accept(new PanelPaintedEvent(currentPanel, startPanel.getValue()));
+		handler.accept(new PanelPaintedEvent(currentPanel, currentColor));
 		do {
 			// Compute
 			computer
@@ -393,7 +394,7 @@ public class Solution {
 			var output = computer.drain();
 
 			// Paint
-			var currentColor = Color.fromLong(output.get(0));
+			currentColor = Color.fromLong(output.get(0));
 			handler.accept(new PanelPaintedEvent(currentPanel, currentColor));
 
 			// Move
