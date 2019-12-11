@@ -310,12 +310,12 @@ public class Solution {
 		Panel getPanel();
 
 		T getPayload();
-		
+
 	}
 
 	abstract static class AbstractEvent<T> implements Event<T> {
 		final Panel panel;
-		
+
 		final T payload;
 
 		AbstractEvent(Panel panel, T payload) {
@@ -327,7 +327,7 @@ public class Solution {
 		public Panel getPanel() {
 			return panel;
 		}
-		
+
 		@Override
 		public T getPayload() {
 			return payload;
@@ -346,7 +346,7 @@ public class Solution {
 		MovedToPanelEvent(Panel panel, View view) {
 			super(panel, view);
 		}
-		
+
 	}
 
 	static class StoppedEvent extends AbstractEvent<Void> {
