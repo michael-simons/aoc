@@ -309,59 +309,50 @@ public class Solution {
 	interface Event<T> {
 		Panel getPanel();
 
-		T getAttribute();
+		T getPayload();
+		
 	}
 
 	abstract static class AbstractEvent<T> implements Event<T> {
 		final Panel panel;
+		
+		final T payload;
 
-		AbstractEvent(Panel panel) {
+		AbstractEvent(Panel panel, T payload) {
 			this.panel = panel;
+			this.payload = payload;
 		}
 
 		@Override
 		public Panel getPanel() {
 			return panel;
 		}
+		
+		@Override
+		public T getPayload() {
+			return payload;
+		}
 	}
 
 	static class PanelPaintedEvent extends AbstractEvent<Color> {
-		final Color color;
 
 		PanelPaintedEvent(Panel panel, Color color) {
-			super(panel);
-			this.color = color;
-		}
-
-		@Override
-		public Color getAttribute() {
-			return color;
+			super(panel, color);
 		}
 	}
 
 	static class MovedToPanelEvent extends AbstractEvent<View> {
-		final View view;
 
 		MovedToPanelEvent(Panel panel, View view) {
-			super(panel);
-			this.view = view;
+			super(panel, view);
 		}
-
-		@Override
-		public View getAttribute() {
-			return view;
-		}
+		
 	}
 
 	static class StoppedEvent extends AbstractEvent<Void> {
 
 		StoppedEvent(Panel panel) {
-			super(panel);
-		}
-
-		@Override
-		public Void getAttribute() {
-			return null;
+			super(panel, null);
 		}
 	}
 
@@ -375,7 +366,7 @@ public class Solution {
 		Consumer<Event> handler = event -> {
 			if (event instanceof PanelPaintedEvent) {
 				PanelPaintedEvent panelPaintedEvent = (PanelPaintedEvent) event;
-				panels.put(panelPaintedEvent.getPanel(), panelPaintedEvent.getAttribute());
+				panels.put(panelPaintedEvent.getPanel(), panelPaintedEvent.getPayload());
 			}
 		};
 		handler = handler.andThen(callback);
@@ -440,7 +431,7 @@ public class Solution {
 				} else {
 					fmt = "%c[%d;%df%1$c[1;31m%s%1$c[0m";
 				}
-				var msg = String.format(fmt, esc, 3 + Math.abs(cur.y), 1 + cur.x, event.getAttribute());
+				var msg = String.format(fmt, esc, 3 + Math.abs(cur.y), 1 + cur.x, event.getPayload());
 				System.out.print(msg);
 			};
 
