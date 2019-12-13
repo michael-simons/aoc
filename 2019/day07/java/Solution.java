@@ -47,7 +47,7 @@ public class Solution {
 
 		private final Map<Integer, BiFunction<Integer, Integer, Boolean>> comparisons = Map.of(
 			7, (a, b) -> a < b,
-			8, (a, b) -> a == b
+			8, (a, b) -> a.equals(b)
 		);
 
 		public Optional<Integer> run() {
