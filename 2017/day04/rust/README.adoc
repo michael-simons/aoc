@@ -1,0 +1,4 @@
+== https://adventofcode.com/2017/day/4[High-Entropy Passphrases]
+
+NOTE: Tested with `cargo 1.41.0 (626f0f40e 2019-12-03)` and `rustc 1.41.0 (5e1a79984 2020-01-27)`
+Correct solutions are: `455` and `186`
