@@ -26,14 +26,14 @@ cargo new stream-processing
 === The program itself
 
 Nothing to fancy here.
-I thought briefly about using https://pest.rs[Pest], 
+I thought briefly about using https://pest.rs[Pest],
 because it's what I saw a colleague using and which got me into this.
 But that's overkill for the task at hand.
 I basically looked at the chars and implemented the algorithm described straight away.
 
 [source,rust,numbered,indent=0]
 ----
-include::src/lib.rs[tags=readingTheInput]
+include::src/lib.rs[tags=theSolution]
 ----
 
 === Compiling and running
@@ -42,13 +42,13 @@ The out of the box experience with Cargo is quite pleasant:
 
 [source,console]
 ----
-cargo test # <>
-cargo build # <>
-cargo build --release # <>
+cargo test # <.>
+cargo build # <.>
+cargo build --release # <.>
 ----
-<> Execute all tests annotated with `#[test]` inside the `#[cfg(test)]` test configuration
-<> Build debug image
-<> Or build an optimized image
+<.> Execute all tests annotated with `#[test]` inside the `#[cfg(test)]` test configuration
+<.> Build debug image
+<.> Or build an optimized image
 
 A `stream-processing` binary will be created in `target/debug` or in `target/release`.
 It can be run directly.
@@ -57,9 +57,8 @@ As an alternative, you run the program via Cargo itself:
 
 [source,console]
 ----
-cargo run input.txt 
+cargo run input.txt
 ----
-
 
 NOTE: Tested with `cargo 1.41.0 (626f0f40e 2019-12-03)` and `rustc 1.41.0 (5e1a79984 2020-01-27)`
       Correct solutions are: `14190` and `7053`
