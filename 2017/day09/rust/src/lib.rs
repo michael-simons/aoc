@@ -43,7 +43,7 @@ pub fn analyze(stream: &str) -> Result {
                         result.score += depth;
                         depth -= 1
                     }
-                    _ => result.num_garbage += 1
+                    _ => continue
                 }
             }
         }
