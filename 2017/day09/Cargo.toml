@@ -1,0 +1,5 @@
+[package]
+name = "stream-processing"
+version = "1.0.0"
+authors = ["Michael Simons <michael@simons.ac>"]
+edition = "2018"
