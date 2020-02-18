@@ -1,0 +1,4 @@
+== https://adventofcode.com/2016/day/5[How About a Nice Game of Chess?]
+
+NOTE: Tested with `java version "13" 2019-09-17`
+      Correct solutions are: `d4cd2ee1` and `f2c730e5`
