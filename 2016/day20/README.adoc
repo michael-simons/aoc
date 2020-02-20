@@ -1,0 +1,18 @@
+== https://adventofcode.com/2016/day/20[Firewall Rules]
+
+Build and run with:
+
+[source,console]
+----
+go run Solution.go
+----
+
+Build a binary without symbols and debug info
+
+[source,console]
+----
+go build -ldflags "-s -w" Solution.go
+----
+
+NOTE: Tested with `go version go1.13.8 darwin/amd64`
+      Correct solutions are: `31053880` and `117`
