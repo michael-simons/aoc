@@ -13,3 +13,7 @@ Thumbs.db
 *.ipr
 
 *.class
+
+node_modules/
+package-lock.json
+

@@ -1,0 +1,37 @@
+== https://adventofcode.com/2018/day/2[Inventory Management System]
+
+=== Installation
+
+==== macOS
+
+Install `npm` with https://brew.sh[Homebrew]:
+
+[source,console]
+----
+brew install npm
+----
+
+Then install Typescript with `npm`
+
+[source,console]
+----
+npm install -g typescript
+----
+
+The solution needs the `fs` module from https://nodejs.org/en/[Node], so we install that as well:
+
+[source,console]
+----
+npm install @types/node
+----
+
+=== Compile and run
+
+[source,console]
+----
+tsc --target ES2018 --strict --module commonjs  Solution.ts 
+node Solution.js
+----
+
+NOTE: Tested with tsc `Version 3.8.2` and node `v13.8.0`
+      Correct solutions are: `8118` and `jbbenqtlaxhivmwyscjukztdp`
