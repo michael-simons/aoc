@@ -1,15 +1,15 @@
 // Part 1
 function computeChecksum(lines: string[]): number {
-    let groupChars: (input: string) => number[] = function (input: string): number[] {
+    const groupChars: (input: string) => number[] = function (input: string): number[] {
 
-        let myMap = new Map<string, number>()
-        for (let char of input) {
-            let cnt = myMap.get(char)?? 0
-            myMap.set(char, cnt + 1)            
+        const groups = new Map<string, number>()
+        for (const char of input) {
+            const cnt = groups.get(char) ?? 0
+            groups.set(char, cnt + 1)
         }
 
-        return [...new Set(myMap.values())]
-            .filter((v:number) => v === 2 || v === 3)
+        return [...new Set(groups.values())]
+            .filter((v: number) => v === 2 || v === 3)
     }
 
     return lines.map(groupChars).reduce((acc, x) => {
@@ -21,8 +21,8 @@ function computeChecksum(lines: string[]): number {
 
 // Part 2
 function computeCommonId(lines: string[]): string | undefined {
-    for (let outer of lines) {
-        for (let inner of lines) {
+    for (const outer of lines) {
+        for (const inner of lines) {
             if (outer === inner) {
                 continue
             }
@@ -45,8 +45,10 @@ function computeCommonId(lines: string[]): string | undefined {
 import * as fs from 'fs'
 
 const fileName = process.argv.length < 3 ? 'input.txt' : process.argv[2]
+const lines = fs.readFileSync(fileName, 'utf8')
+    .split('\n')
+    .filter((v: string) => v.length !== 0)
 
-const lines = fs.readFileSync(fileName, 'utf8').split('\n').filter((v:string) => v.length !== 0)
 const checksum = computeChecksum(lines)
 const commonId = computeCommonId(lines)
 
