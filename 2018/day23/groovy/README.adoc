@@ -1,4 +1,0 @@
-== https://adventofcode.com/2018/day/23[Experimental Emergency Teleportation]
-
-NOTE: Tested with Groovy Version `3.0.1`
-      Correct solutions are: `408` and `jbbenqtlaxhivmwyscjukztdp`
