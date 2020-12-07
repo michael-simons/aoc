@@ -1,0 +1,24 @@
+== https://adventofcode.com/2020/day/5[Binary Boarding]
+
+Neo4j / Graph based solution. Run inside docker for example, but this is not required.
+The `prepare.cypher` script requires the APOC plugins to be installed, though.
+
+This is basically about a really sophisticated way of creating a linked list 
+with https://neo4j.com/labs/apoc/4.2/[APOC] and then traverse it ;).
+
+image::day5.png[]
+
+`star2.cypher` uses the a existential subquery, which was introduced in Neo4j 4.0
+
+[source,bash]
+----
+#!/bin/bash
+docker run --name neo4j --volume=$(pwd):/import  -p 7474:7474 -p 7687:7687 -e NEO4JLABS_PLUGINS='["apoc"]' -e 'NEO4J_apoc_import_file_enabled=true' -e 'NEO4J_AUTH=neo4j/secret' -d neo4j:4.2
+docker exec --interactive neo4j cypher-shell -u neo4j -p secret --format verbose < prepare.cypher
+docker exec --interactive neo4j cypher-shell -u neo4j -p secret --format verbose < star1.cypher
+docker exec --interactive neo4j cypher-shell -u neo4j -p secret --format verbose < star2.cypher
+docker rm --force neo4j
+----
+
+NOTE: Tested with `neo4j:4.2.0`
+      Correct solutions are: `953` and `615`.
