@@ -1,0 +1,15 @@
+:tags: CTE, SQL
+
+== https://adventofcode.com/2020/day/6[Custom Customs]
+
+Another database solution, this time with H2.
+I "cheated" a bit and loaded the data via Groovy, therefor you need https://groovy-lang.org[Groovy] installed
+to run it, but nothing more.
+
+Schema contains three tables, `groups`, `people`, `answers`. 
+Find them in the `Solution.groovy` script.
+
+Run with `groovy Solution`
+
+NOTE: Tested with `Groovy Version: 3.0.7 JVM: 15 Vendor: Oracle Corporation OS: Mac OS X`
+      Correct solutions are: `7128` and `3640`.
