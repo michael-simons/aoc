@@ -35,7 +35,7 @@ include::Solution.java[tags=starOne]
 <3> Apply the equation
 <4> Reduce the values to one single value
 
-I was positivly suprised that a reduction was explainable in minutes with a piece of paper.
+I was positively surprised that a reduction was explainable in minutes with a piece of paper.
 
 Star two was a bit more evolved.
 I wanted to avoid recursive lambdas. 
