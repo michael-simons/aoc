@@ -32,7 +32,7 @@ and declares the embedded Neo4j graph database as dependency.
 
 To run this example, you need to install only jbang.
 
-Run the example via `jbang Solution.java` or directly as ./Solution.java`.
+Run the example via `jbang Solution.java` or directly as `./Solution.java`.
 Of course it is still a valid and runnable Java class on it's own.
 
 The solution to the problem? It is  trivial. https://twitter.com/Der_Pesse/status/1336430352362041346[Samuel] said yesterday
