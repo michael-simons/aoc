@@ -1,3 +1,5 @@
+:tags: Neo4j, Cypher
+
 == https://adventofcode.com/2020/day/5[Binary Boarding]
 
 Neo4j / Graph based solution. Run inside docker for example, but this is not required.
