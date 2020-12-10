@@ -1,0 +1,34 @@
+:tags: SQL, MariaDB
+
+== https://adventofcode.com/2020/day/1[Report Repair]
+
+SQL based solution, like shooting fish in a barrel.
+Hardest part was to make enable `local_infile` on MariaDB respectively MySQL to
+load the data easily.
+
+Anyway, finding the combination of values that sum up to 2020 is completely trivial:
+
+[source,sql]
+----
+SELECT DISTINCT i1.value * i2.value  AS starOne
+FROM input i1 CROSS JOIN input i2
+WHERE i1.value + i2.value = 2020;
+----
+
+I guess you can guess the idea for 3 values matching up 2020?
+
+You need either a locally running MariaDB instance to execute `solution.sql` or 
+you run the following script that brings up docker, runs the solution and removes
+the container again.
+
+[source,bash]
+----
+#!/bin/bash
+docker run --name maria --volume=$(pwd):/aoc -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=aoc -e MYSQL_PASSWORD=secret -e MYSQL_DATABASE=aoc -d mariadb:10.3
+sleep 10
+docker exec -w /aoc -it maria /bin/bash -c  "mysql -uaoc -psecret aoc --local-infile=1 < solution.sql"
+docker rm --force maria
+----
+
+NOTE: Tested with `MariaDB-1:10.3.27`
+      Correct solutions are: `1010299` and `42140160`.
