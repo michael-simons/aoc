@@ -31,7 +31,7 @@ Replace the last select at the top with:
 
 [source,sql]
 ----
--- The shared common table expressions
+-- The shared common table expressions from above
 groups AS (
     SELECT difference, count(*) AS cnt
     FROM differences
@@ -57,7 +57,7 @@ combinations to the power of the number of occurrences of `11`, `111` and `1111`
 
 [source,sql]
 ----
--- The shared common table expressions
+-- The shared common table expressions from above
 consecutive_1s AS (
     SELECT count(*) as length
     FROM (
