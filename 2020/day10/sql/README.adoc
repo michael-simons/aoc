@@ -1,0 +1,110 @@
+:tags: SQL, MariaDB
+
+== https://adventofcode.com/2020/day/10[Adapter Array]
+
+The main ideas for both part 1 and part 2 are
+
+[source,sql]
+----
+WITH source AS  (
+    SELECT 0 AS value
+    UNION
+    SELECT value FROM input -- <.>
+),
+differences AS (
+    SELECT value, ifnull(
+        lead(value) OVER (ORDER BY value asc),  -- <.>
+        value + 3  -- <.>
+    ) - value AS difference
+    FROM source
+) 
+SELECT * FROM differences; -- <.>
+----
+<.> Use a union query and a single row select to "add" the missing 0 "outlet"
+<.> Order by value and compute the differences via the analytic `lead` function
+<.> If there's no lead, we can add the default difference of `3` to the end
+<.> Just to make this a valid query ;)
+
+=== Part one
+
+Replace the last select at the top with:
+
+[source,sql]
+----
+-- The shared common table expressions
+groups AS (
+    SELECT difference, count(*) AS cnt
+    FROM differences
+    GROUP BY difference
+) <.>
+SELECT DISTINCT g1.cnt * g2.cnt AS starOne
+FROM groups g1 CROSS JOIN groups g2 ON g1.difference <> g2.difference;
+----
+<.> Count the differences group by their value
+<.> Cross join the result with itself and multiply the 2 values
+
+Of course the groups are computed with a common table expression which can be reused.
+As only `1` and `3` are allowed, it will only contain 2 rows.
+
+=== Part two
+
+Variations and permutations won't do here. The numbers are two big. The key to understand
+is that all consecutive `1`s longer than 1 can be permuted.
+
+2 ones allow 2 combinations, 3 ones allow 4, 4 ones allow 7. 
+The total number of all those combinations per length is the number of possible
+combinations to the power of the number of occurrences of `11`, `111` and `1111`.
+
+[source,sql]
+----
+-- The shared common table expressions
+consecutive_1s AS (
+    SELECT count(*) as length
+    FROM (
+        SELECT difference,
+               (row_number() OVER (ORDER BY value) - row_number() over (PARTITION BY difference ORDER BY value)) as grp
+         FROM differences
+    ) hlp -- <.>
+    WHERE difference = 1
+    GROUP BY grp
+),
+number_of_spots AS (  -- <.>
+    SELECT count(*) AS cnt, length 
+    FROM consecutive_1s 
+    WHERE length > 1
+    GROUP BY length
+),
+combinations AS (  -- <.>
+    SELECT CASE length
+        WHEN 2 THEN pow(2, cnt)
+        WHEN 3 THEN pow(4, cnt)
+        WHEN 4 THEN pow(7, cnt)
+    END as value
+    FROM number_of_spots
+) 
+SELECT round(exp(sum(ln(value)))) as starTwo  -- <.>
+FROM combinations;
+----
+<.> Compute the length of consecutive ones
+    This is done via the difference of the result of two window functions over different 
+    windows: One per value, one per difference as computed before.
+    The count grouped by that new difference is the number of consecutive ones.
+<.> The number of spots is a simple count, we don't count ones the length of `1`
+<.> Compute the combinations as shown above
+<.> Dust of old school math knowledge due to the fact that SQL has no pendant to `sum` for `prod` 
+    and compute the product as `e` to the power of the summarized natural logarithm 
+    of the single values.
+
+Run a database inside docker and execute `solution.sql`:
+
+[source,bash]
+----
+#!/bin/bash
+docker run --name maria --volume=$(pwd):/aoc -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=aoc -e MYSQL_PASSWORD=secret -e MYSQL_DATABASE=aoc -d mariadb:10.3
+sleep 10
+docker exec -w /aoc -it maria /bin/bash -c  "mysql -uaoc -psecret aoc --local-infile=1 < solution.sql"
+docker rm --force maria
+----
+
+NOTE: Tested with `MariaDB-1:10.3.27`
+      Correct solutions are: `2070` and `24179327893504`.
