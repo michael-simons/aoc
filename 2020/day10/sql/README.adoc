@@ -2,14 +2,15 @@
 
 == https://adventofcode.com/2020/day/10[Adapter Array]
 
-The main ideas for both part 1 and part 2 are
+The main ideas for both part 1 and part 2 are shared as a view
 
 [source,sql]
 ----
+CREATE OR REPLACE VIEW v_differences AS
 WITH source AS  (
     SELECT 0 AS value
     UNION
-    SELECT value FROM input -- <.>
+    SELECT value FROM input  -- <.>
 ),
 differences AS (
     SELECT value, ifnull(
@@ -17,13 +18,12 @@ differences AS (
         value + 3  -- <.>
     ) - value AS difference
     FROM source
-) 
-SELECT * FROM differences; -- <.>
+)
+SELECT * FROM differences;
 ----
 <.> Use a union query and a single row select to "add" the missing 0 "outlet"
 <.> Order by value and compute the differences via the analytic `lead` function
 <.> If there's no lead, we can add the default difference of `3` to the end
-<.> Just to make this a valid query ;)
 
 === Part one
 
@@ -31,12 +31,11 @@ Replace the last select at the top with:
 
 [source,sql]
 ----
--- The shared common table expressions from above
-groups AS (
+WITH groups AS (
     SELECT difference, count(*) AS cnt
-    FROM differences
+    FROM v_differences
     GROUP BY difference
-) <.>
+) -- <.>
 SELECT DISTINCT g1.cnt * g2.cnt AS starOne
 FROM groups g1 CROSS JOIN groups g2 ON g1.difference <> g2.difference;
 ----
@@ -57,13 +56,12 @@ combinations to the power of the number of occurrences of `11`, `111` and `1111`
 
 [source,sql]
 ----
--- The shared common table expressions from above
-consecutive_1s AS (
+WITH consecutive_1s AS (
     SELECT count(*) as length
     FROM (
         SELECT difference,
                (row_number() OVER (ORDER BY value) - row_number() over (PARTITION BY difference ORDER BY value)) as grp
-         FROM differences
+         FROM v_differences
     ) hlp -- <.>
     WHERE difference = 1
     GROUP BY grp
@@ -95,7 +93,7 @@ FROM combinations;
     and compute the product as `e` to the power of the summarized natural logarithm 
     of the single values.
 
-Run a database inside docker and execute `solution.sql`:
+Either run the statements above or run the whole script inside a database running in docker and execute `solution.sql`:
 
 [source,bash]
 ----
