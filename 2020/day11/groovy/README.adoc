@@ -1,0 +1,16 @@
+:tags: Groovy
+
+== https://adventofcode.com/2020/day/11[Seating System]
+
+Game of Life way thing. 
+Key is not to replace the seating on the go but on the whole thing at once.
+
+Didn't have a fancy idea for star two but only went in all directions.
+
+Run with `groovy Solution`
+
+NOTE: Tested with `Groovy Version: 3.0.7 JVM: 1.8.0_275 Vendor: AdoptOpenJDK OS: Mac OS X`
+      Correct solutions are: `2321` and `2102`. +
+      +
+      With JDK 9+ the `combinations` method used will issue a warning, which is not a bug 
+      of this solution, but of Groovy in combination with newer JDKs.
