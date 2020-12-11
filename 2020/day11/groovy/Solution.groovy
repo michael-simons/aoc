@@ -1,4 +1,3 @@
-/* groovylint-disable DuplicateNumberLiteral, DuplicateStringLiteral */
 class Solution {
 
     static class Grid {
