@@ -1,0 +1,25 @@
+:tags: SQL, MariaDB
+
+== https://adventofcode.com/2020/day/12[Rain Risk]
+
+A variation of last years https://adventofcode.com/2019/day/3[ Crossed Wires] which I solved last year with https://github.com/michael-simons/aoc/blob/master/2019/day03/java/Solution.java[plain java] (I would so use records today).
+
+It would be boring to do this in another language, so I stick with databases. 
+Part one is essentially the same as last year and my solution is actually very similar. 
+I do keep track of the state changes in a recursive table definition.
+
+Either run the statements above or run the whole script inside a database running in docker and execute `solution.sql`:
+
+[source,bash]
+----
+#!/bin/bash
+docker run --name maria --volume=$(pwd):/aoc -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=aoc -e MYSQL_PASSWORD=secret -e MYSQL_DATABASE=aoc -d mariadb:10.3
+sleep 10
+docker exec -w /aoc -it maria /bin/bash -c  "mysql -uaoc -psecret aoc --local-infile=1 < solution.sql"
+docker rm --force maria
+----
+
+NOTE: Part 2 is missing (yet)
+
+NOTE: Tested with `MariaDB-1:10.3.27`
+      Correct solutions are: `757` and `n/a`.
