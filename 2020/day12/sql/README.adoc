@@ -159,10 +159,7 @@ x' = cos(g) * (x - a) - sin(g) * (y - b) + a
 y' = sin(g) * (x - a) + cos(g) * (y - b) + b
 ----
 
-We only have to deal with 90°, 180° and 270° and as such, `sin` and `cos` vary between -1, 0 and 1 an we can again read the
-formulas pretty much as such in the statement.
-
-I did not simplify the formula on purpose for other people like me who needed to dust of that part of his math brain…
++Edit:+ It turns out that all the required trigonometrics are https://modern-sql.com/de/blog/2017-06/was-ist-neu-in-sql-2016[part of SQL:2016] and it's mucher to use them directly. Thus, the both the technical and algorithmical solution are nicely visible.
 
 [source,sql]
 ----
@@ -184,29 +181,16 @@ steps(id, x, y, wx, wy) AS (
                 WHEN 'F' THEN (wy - y) * i
                 ELSE 0 END,
             CASE cmds.dir
-            WHEN 'F' THEN wx + (wx -x)* i
-            WHEN 'L' THEN
-                CASE i WHEN   90 THEN         0 - (wy - y) + x
-                       WHEN  180 THEN -(wx - x) +        0 + x
-                       WHEN  270 THEN         0 + (wy - y) + x END
-            WHEN 'R' THEN
-                CASE i WHEN   90 THEN         0 + (wy - y) + x
-                       WHEN  180 THEN -(wx - x) +        0 + x
-                       WHEN  270 THEN         0 - (wy - y) + x
-                       END
-            ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
+                WHEN 'F' THEN wx + (wx -x)* i
+                WHEN 'L' THEN cos(pi() * i/180) * (wx - x) - sin(pi() * i/180) * (wy - y) + +x
+                WHEN 'R' THEN cos(pi() *-i/180) * (wx - x) - sin(pi() *-i/180) * (wy - y) + +x
+                ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
             END,
             CASE cmds.dir
-            WHEN 'F' THEN wy + (wy-y) * i
-            WHEN 'L' THEN
-               CASE i WHEN  90 THEN  (wx - x) +        0 + y
-                      WHEN 180 THEN         0 - (wy - y) + y
-                      WHEN 270 THEN -(wx -x ) +        0 + y END
-            WHEN 'R' THEN
-               CASE i WHEN  90 THEN -(wx - x) +        0 + y
-                      WHEN 180 THEN         0 - (wy - y) + y
-                      WHEN 270 THEN  (wx - x) +        0 + y END
-            ELSE wy + i * CAST(substr(modifier, instr(modifier, ',') + 1 ) AS int)
+                WHEN 'F' THEN wy + (wy-y) * i
+                WHEN 'L' THEN sin(pi() * i/180) * (wx - x) + cos(pi() * i/180) * (wy - y) + y
+                WHEN 'R' THEN sin(pi() *-i/180) * (wx - x) + cos(pi() *-i/180) * (wy - y) + y
+                ELSE wy + i * CAST(substr(modifier, instr(modifier, ',') + 1 ) AS int)
             END
     FROM cmds
     JOIN steps ON steps.id + 1 = cmds.id

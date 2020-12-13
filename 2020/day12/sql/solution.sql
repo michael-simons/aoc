@@ -77,6 +77,7 @@ SELECT abs(x) + abs(y) AS starOne
 FROM steps
 ORDER BY id DESC LIMIT 1;
 
+-- Part 2
 WITH recursive cmds AS (
     SELECT * FROM v_cmds
 ),
@@ -95,28 +96,16 @@ steps(id, x, y, wx, wy) AS (
                 WHEN 'F' THEN (wy - y) * i
                 ELSE 0 END,
             CASE cmds.dir
-            WHEN 'F' THEN wx + (wx -x)* i
-            WHEN 'L' THEN
-                CASE i WHEN   90 THEN -wy + y + x
-                       WHEN  180 THEN -wx + 2*x
-                       WHEN  270 THEN  wy - y + x END
-            WHEN 'R' THEN
-                CASE i WHEN   90 THEN  wy - y + x
-                       WHEN  180 THEN -wx + 2*x
-                       WHEN  270 THEN -wy + y + x END
-            ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
+                WHEN 'F' THEN wx + (wx -x)* i
+                WHEN 'L' THEN cos(pi() * i/180) * (wx - x) - sin(pi() * i/180) * (wy - y) + +x
+                WHEN 'R' THEN cos(pi() *-i/180) * (wx - x) - sin(pi() *-i/180) * (wy - y) + +x
+                ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
             END,
             CASE cmds.dir
-            WHEN 'F' THEN wy + (wy-y) * i
-            WHEN 'L' THEN
-               CASE i WHEN  90 THEN  wx - x + y
-                      WHEN 180 THEN -wy + 2*y
-                      WHEN 270 THEN -wx + x + y END
-            WHEN 'R' THEN
-               CASE i WHEN  90 THEN -wx + x + y
-                      WHEN 180 THEN -wy + 2*y
-                      WHEN 270 THEN  wx - x + y END
-            ELSE wy + i * CAST(substr(modifier, instr(modifier, ',') + 1 ) AS int)
+                WHEN 'F' THEN wy + (wy-y) * i
+                WHEN 'L' THEN sin(pi() * i/180) * (wx - x) + cos(pi() * i/180) * (wy - y) + y
+                WHEN 'R' THEN sin(pi() *-i/180) * (wx - x) + cos(pi() *-i/180) * (wy - y) + y
+                ELSE wy + i * CAST(substr(modifier, instr(modifier, ',') + 1 ) AS int)
             END
     FROM cmds
     JOIN steps ON steps.id + 1 = cmds.id
