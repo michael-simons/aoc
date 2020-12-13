@@ -159,7 +159,7 @@ x' = cos(g) * (x - a) - sin(g) * (y - b) + a
 y' = sin(g) * (x - a) + cos(g) * (y - b) + b
 ----
 
-+Edit:+ It turns out that all the required trigonometrics are https://modern-sql.com/de/blog/2017-06/was-ist-neu-in-sql-2016[part of SQL:2016] and it's mucher to use them directly. Thus, the both the technical and algorithmical solution are nicely visible.
++Edit:+ It turns out that all the required trigonometric functions are https://modern-sql.com/de/blog/2017-06/was-ist-neu-in-sql-2016[part of SQL:2016] and it's mucher nicer to use them directly. Thus, the both the technical and algorithmical solution are nicely visible.
 
 [source,sql]
 ----
