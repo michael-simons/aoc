@@ -88,7 +88,7 @@ Part 1 and 2 differ here only in the fact that part 2 needs an additional pair o
 
 ==== Algorithm Part 1
 
-Very much literally as described in the task "Move the coordinates along the current direction on `F`, change direction and move the number of given value in that on `N`, `E`, `S` and `W`", turn but don't move on `L` and `R`:
+Very much literally as described in the task "Move the coordinates along the current direction on `F`, change direction and move the number of given value in that on `N`, `E`, `S` and `W`, turn but don't move on `L` and `R`:
 
 [source,sql]
 ----
