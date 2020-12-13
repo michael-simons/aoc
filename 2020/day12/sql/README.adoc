@@ -2,10 +2,13 @@
 
 == https://adventofcode.com/2020/day/12[Rain Risk]
 
+_Happy advent to all of you! More lockdown incoming and what else is there todo when all the cookies have been backed,
+games have been played apart from solving puzzles? ;)_
+
 A variation of last years https://adventofcode.com/2019/day/3[ Crossed Wires] which I solved last year with https://github.com/michael-simons/aoc/blob/master/2019/day03/java/Solution.java[plain java] (I would so use records today).
 
-It would be boring to do this in another language, so I stick with databases. 
-Part one is essentially the same as last year and my solution is actually very similar. 
+It would be boring to just do this in another language, so I stick with databases this year
+Part one is essentially the same as last year and my solution is actually very similar.
 I do keep track of the state changes in a recursive table definition.
 
 Either run the statements above or run the whole script inside a database running in docker and execute `solution.sql`:
@@ -19,7 +22,199 @@ docker exec -w /aoc -it maria /bin/bash -c  "mysql -uaoc -psecret aoc --local-in
 docker rm --force maria
 ----
 
-NOTE: Part 2 is missing (yet)
+=== Ideas behind the solution
+
+==== Technical
+
+I need a list of commands. I get those by loading the input file into a table with two columns (sequential, numeric id and the actual value of the row).
+
+I use a view to split the directional inputs for the directions into a modifiers for the x and y values:
+
+[source,sql]
+----
+CREATE OR REPLACE VIEW v_cmds AS
+WITH source AS  (
+    SELECT id,
+           substr(value, 1, 1) AS dir,
+           CAST(substr(value, 2) AS int) AS i
+    FROM input
+    ORDER BY id ASC
+), cmds AS (
+    SELECT id, dir, i,
+           CASE dir
+           WHEN 'N' THEN concat( 0,',', 1)
+           WHEN 'E' THEN concat( 1,',', 0)
+           WHEN 'S' THEN concat( 0,',',-1)
+           WHEN 'W' THEN concat(-1,',', 0) END AS modifier
+    FROM source
+)
+SELECT * FROM cmds;
+----
+
+For both parts I need state.
+I can create my state in form of a recursive table definition.
+The initial state is the case of part 1 the position of the ship and the direction it's facing.
+The next step consists of working with the commando comming from the view above fitting the previous row.
+
+The following listing shows that without actual computing something new:
+
+[source,sql]
+----
+WITH recursive cmds AS (  -- <.>
+    SELECT * FROM v_cmds
+),
+steps(id, x, y, curdir) AS (  -- <.>
+    SELECT 0 AS id , 0 AS x, 0 AS y, 'E' AS curdir -- <.>
+    UNION -- <.>
+    SELECT cmds.id,  steps.x, steps.y, curdir
+    FROM cmds
+    JOIN steps ON steps.id + 1 = cmds.id -- <.>
+)
+SELECT *
+FROM steps
+ORDER BY id ASC;
+----
+<.> The first Common Table expressions just selects all the commands
+<.> I need to declare the columns of the CTE because I want to refer to them inside itself again
+<.> The initial step before going into the recursion
+<.> The union to bring the initial step and the recursively computed one together
+<.> Diving into the recursion as I select again from `steps`
+    The first row of `steps` has an artifical id of `0` which is not part of the commands (they start 1),
+    so that set is finite
+
+As you see, the above explanation does not do anything, but just reiterates all the steps plus an additional one.
+
+Part 1 and 2 differ here only in the fact that part 2 needs an additional pair of coordinates.
+
+==== Algorithm Part 1
+
+Very much literally as described in the task "Move the coordinates along the current direction on `F`, change direction and move the number of given value in that on `N`, `E`, `S` and `W`", turn but don't move on `L` and `R`:
+
+[source,sql]
+----
+WITH recursive cmds AS (
+    SELECT * FROM v_cmds
+),
+steps(id, x, y, curdir) AS (
+    SELECT 0 AS id , 0 AS x, 0 AS y, 'E' AS curdir
+    UNION
+    SELECT cmds.id,
+           steps.x +
+                CASE cmds.dir
+                WHEN 'L' THEN 0
+                WHEN 'R' THEN 0
+                WHEN 'F' THEN
+                    CASE curdir
+                    WHEN 'E' THEN i
+                    WHEN 'W' THEN -i
+                    ELSE 0 END
+                ELSE i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
+                END,
+           steps.y +
+                CASE cmds.dir
+                WHEN 'L' THEN 0
+                WHEN 'R' THEN 0
+                WHEN 'F' THEN
+                    CASE curdir
+                    WHEN 'N' THEN i
+                    WHEN 'S' THEN -i
+                    ELSE 0 END
+                ELSE i * CAST(substr(modifier, instr(modifier, ',') +1 ) AS int)
+                END,
+           CASE cmds.dir
+           WHEN 'L' THEN
+                CASE curdir
+                WHEN 'E' THEN CASE i WHEN 90 THEN 'N' WHEN 180 THEN 'W' ELSE 'S' END
+                WHEN 'W' THEN CASE i WHEN 90 THEN 'S' WHEN 180 THEN 'E' ELSE 'N' END
+                WHEN 'N' THEN CASE i WHEN 90 THEN 'W' WHEN 180 THEN 'S' ELSE 'E' END
+                WHEN 'S' THEN CASE i WHEN 90 THEN 'E' WHEN 180 THEN 'N' ELSE 'W' END
+                END
+           WHEN 'R' THEN
+                CASE curdir
+                WHEN 'E' THEN CASE i WHEN 90 THEN 'S' WHEN 180 THEN 'W' ELSE 'N' END
+                WHEN 'W' THEN CASE i WHEN 90 THEN 'N' WHEN 180 THEN 'E' ELSE 'S' END
+                WHEN 'N' THEN CASE i WHEN 90 THEN 'E' WHEN 180 THEN 'S' ELSE 'W' END
+                WHEN 'S' THEN CASE i WHEN 90 THEN 'W' WHEN 180 THEN 'N' ELSE 'E' END
+                END
+           ELSE curdir END
+    FROM cmds
+    JOIN steps ON steps.id + 1 = cmds.id
+)
+SELECT abs(x) + abs(y) AS starOne
+FROM steps
+ORDER BY id DESC LIMIT 1;
+----
+
+==== Algorithm Part 2
+
+You need to add a waypoint to the state and decide whether you want to store it absolute coordinates
+or relative ones. I chose absolutes because I found it easier to debug.
+Then you need to remember some math on how to rotate a point around a given point.
+
+Rotating a point `(x,y)` around a given point `(a,b)` by a degree of `g` onto a new point `(x', y')` is given as
+
+[source]
+----
+x' = cos(g) * (x - a) - sin(g) * (y - b) + a
+y' = sin(g) * (x - a) + cos(g) * (y - b) + b
+----
+
+We only have to deal with 90°, 180° and 270° and as such, `sin` and `cos` vary between -1, 0 and 1 an we can again read the
+formulas pretty much as such in the statement.
+
+I did not simplify the formula on purpose for other people like me who needed to dust of that part of his math brain…
+
+[source,sql]
+----
+WITH recursive cmds AS (
+    SELECT * FROM v_cmds
+),
+steps(id, x, y, wx, wy) AS (
+    SELECT 0 AS id,
+           0 AS x, 0 AS y,
+           10 AS wx, 1 AS wy
+    UNION
+    SELECT cmds.id,
+           steps.x +
+                CASE cmds.dir
+                WHEN 'F' THEN (wx - x) * i
+                ELSE 0 END,
+           steps.y +
+                CASE cmds.dir
+                WHEN 'F' THEN (wy - y) * i
+                ELSE 0 END,
+            CASE cmds.dir
+            WHEN 'F' THEN wx + (wx -x)* i
+            WHEN 'L' THEN
+                CASE i WHEN   90 THEN         0 - (wy - y) + x
+                       WHEN  180 THEN -(wx - x) +        0 + x
+                       WHEN  270 THEN         0 + (wy - y) + x END
+            WHEN 'R' THEN
+                CASE i WHEN   90 THEN         0 + (wy - y) + x
+                       WHEN  180 THEN -(wx - x) +        0 + x
+                       WHEN  270 THEN         0 - (wy - y) + x
+                       END
+            ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
+            END,
+            CASE cmds.dir
+            WHEN 'F' THEN wy + (wy-y) * i
+            WHEN 'L' THEN
+               CASE i WHEN  90 THEN  (wx - x) +        0 + y
+                      WHEN 180 THEN         0 - (wy - y) + y
+                      WHEN 270 THEN -(wx -x ) +        0 + y END
+            WHEN 'R' THEN
+               CASE i WHEN  90 THEN -(wx - x) +        0 + y
+                      WHEN 180 THEN         0 - (wy - y) + y
+                      WHEN 270 THEN  (wx - x) +        0 + y END
+            ELSE wy + i * CAST(substr(modifier, instr(modifier, ',') + 1 ) AS int)
+            END
+    FROM cmds
+    JOIN steps ON steps.id + 1 = cmds.id
+)
+SELECT abs(x) + abs(y) AS starTwo
+FROM steps
+ORDER BY id DESC LIMIT 1;
+----
 
 NOTE: Tested with `MariaDB-1:10.3.27`
-      Correct solutions are: `757` and `n/a`.
+      Correct solutions are: `757` and `51249`.

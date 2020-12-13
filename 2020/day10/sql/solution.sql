@@ -2,13 +2,10 @@ DROP TABLE IF EXISTS input;
 CREATE TABLE input(value INT);
 
 -- Data loading, might be different for your database.
--- Needed on MySQL
--- SET GLOBAL local_infile = true;
-
+-- SET GLOBAL local_infile = true; -- Needed on MySQL
 LOAD DATA local INFILE 'input.txt' INTO TABLE input;
 
 -- Shared parts
-
 CREATE OR REPLACE VIEW v_differences AS
 WITH source AS  (
     SELECT 0 AS value
@@ -20,7 +17,6 @@ differences AS (
     FROM source
 )
 SELECT * FROM differences;
-
 
 -- Part 1
 WITH groups AS (
