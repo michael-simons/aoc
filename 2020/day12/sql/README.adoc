@@ -182,8 +182,8 @@ steps(id, x, y, wx, wy) AS (
                 ELSE 0 END,
             CASE cmds.dir
                 WHEN 'F' THEN wx + (wx -x)* i
-                WHEN 'L' THEN cos(pi() * i/180) * (wx - x) - sin(pi() * i/180) * (wy - y) + +x
-                WHEN 'R' THEN cos(pi() *-i/180) * (wx - x) - sin(pi() *-i/180) * (wy - y) + +x
+                WHEN 'L' THEN cos(pi() * i/180) * (wx - x) - sin(pi() * i/180) * (wy - y) + x
+                WHEN 'R' THEN cos(pi() *-i/180) * (wx - x) - sin(pi() *-i/180) * (wy - y) + x
                 ELSE wx + i * CAST(substr(modifier, 1, instr(modifier, ',') -1 ) AS int)
             END,
             CASE cmds.dir
