@@ -1,0 +1,9 @@
+:tags: JEP384
+
+== https://adventofcode.com/2020/day/3[Toboggan Trajectory]
+
+Just plain Java.
+
+NOTE: Tested with `java version "15.0.1" 2020-10-20`.      
+      Run with: `java --enable-preview --source 15 Solution.java`.
+      Correct solutions are: `173` and `4385176320`.
