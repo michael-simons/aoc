@@ -1,0 +1,10 @@
+== https://adventofcode.com/2020/day/4[Passport Processing]
+
+I think that has been the first https://www.php.net[PHP] I wrote in about 15 years or so.
+Funny thing: It's also the program who gave be both golden stars this year at first try.
+
+If you remember that most function have somewhat weird parameter orders, you can enjoy the ease of yolo checking string values for numeric values like this: `$passport['byr'] >= 1920 && $passport['byr'] <= 2002;` where `$passport` is an associative array containing `string => string`.
+
+NOTE: Tested with `PHP 7.3.11 (cli)`.
+      Run with: `php solution.php`.
+      Correct solutions are: `237` and `172`.
