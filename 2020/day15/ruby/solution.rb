@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 
 def solve(input, target)
-  spoken = Hash.new {|h,k| h[k] = Array.new }
+  spoken = Array.new(target)
+
   last_number = nil
   input.each_with_index do |n, i|
-    spoken[n] << i + 1
+    spoken[n] = [i + 1]
     last_number = n
   end
 
@@ -16,6 +17,8 @@ def solve(input, target)
       last_number = spoken[old_last][1] - spoken[old_last][0]
       spoken[old_last].shift
     end
+
+    spoken[last_number] = [] unless spoken[last_number]
     spoken[last_number] << i
   end
 

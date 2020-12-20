@@ -1,6 +1,6 @@
 == https://adventofcode.com/2020/day/15[Rambunctious Recitation]
 
-Dead slow (About 14sec on a mid 2011 iMac), but it works… Run with `ruby solution.rb`.
+Dead slow (About 8sec on a mid 2011 iMac), but it works… Run with `ruby solution.rb`.
 
 NOTE: Tested with `ruby 2.7.2p137`
       Correct solutions are: `610` and `1407`
