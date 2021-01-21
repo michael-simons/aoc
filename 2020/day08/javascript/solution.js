@@ -31,7 +31,6 @@ const instructions = fs.readFileSync(fileName, 'utf8')
     .filter(v => v.length !== 0)
     .map(line => line.split(' ').map((v,i) => i == 1 ? parseInt(v) : v))
 
-
 console.log(`Star one ${run(instructions, -1).acc}`)
 
 const jumps = instructions
