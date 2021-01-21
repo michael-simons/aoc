@@ -1,0 +1,16 @@
+== https://adventofcode.com/2020/day/8[Handheld Halting]
+
+Yeah, my first JavaScript solution ;) 
+No Java developer got hurt, though: Tested on https://www.graalvm.org[GraalVM].
+
+Run with
+
+[source,bash]
+----
+$GRAALVM_HOME/bin/node solution.js 
+----
+
+Plain node (tested with `v14.4.0`) is of course fine too.
+
+NOTE: Tested with `GraalVM CE Native Polyglot Engine Version 20.3.0` providing Node `v12.18.4`
+      Correct solutions are: `1563` and `767`.
