@@ -1,0 +1,9 @@
+:tags: JEP384
+
+== https://adventofcode.com/2020/day/16[Ticket Translation]
+
+Just plain Java with a bit of `Set` magic.
+
+NOTE: Tested with `java version "15.0.1" 2020-10-20`.
+      Run with: `java --enable-preview --source 15 Solution.java`.
+      Correct solutions are: `25895` and `5865723727753`.
