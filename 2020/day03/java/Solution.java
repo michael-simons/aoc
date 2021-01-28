@@ -1,4 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
+//JAVA 15
 //JAVAC_OPTIONS --enable-preview -source 15
 //JAVA_OPTIONS --enable-preview
 

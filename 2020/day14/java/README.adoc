@@ -1,0 +1,10 @@
+:tags: JEP384, JEP361, combinations
+
+== https://adventofcode.com/2020/day/14[https://adventofcode.com/2020/day/14]
+
+Interesting pieces here are the `switch` expressions, a bit of https://en.wikiversity.org/wiki/Advanced_Java/Bitwise_Operators[bit shifting] that 
+I hardly do in my day to day job and an implementation of a combinations algorithm.
+
+NOTE: Tested with `java version "15.0.1" 2020-10-20`.
+      Run with: `java --enable-preview --source 15 Solution.java`.
+      Correct solutions are: `12610010960049` and `3608464522781`.
