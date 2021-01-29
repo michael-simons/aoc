@@ -4,6 +4,9 @@
 
 Solution using https://openjdk.java.net/jeps/384[JDK 15 Record feature].
 
+There's also a Spring based solution in this folder, which is an executable https://www.jbang.dev[jbang] script.
+It showcases functional bean registration.
+
 NOTE: Tested with `java version "15.0.1" 2020-10-20`.
       Run with: `java --enable-preview --source 15 Solution.java`.
       Correct solutions are: `447` and `249`.
