@@ -6,35 +6,29 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public final class Solution {
 
 	private static <T> List<List<T>> kCombinations(int k, List<T> values) {
 
-		if (k == 0 || values.isEmpty()) {
-			return List.of(List.of());
+		var combinations = List.of(List.<T>of());
+		for (int depth = 0; depth < k; ++depth) {
+			var newCombinations = new ArrayList<List<T>>();
+			for (var current : combinations) {
+				var startIndex = current.isEmpty() ? 0 : values.indexOf(current.get(current.size() - 1)) + 1;
+				for (var element : values.subList(startIndex, values.size())) {
+					var next = new ArrayList<T>();
+					next.addAll(current);
+					next.add(element);
+					newCombinations.add(next);
+				}
+			}
+			combinations = newCombinations;
 		}
-
-		if (k == values.size()) {
-			return List.of(values);
-		}
-
-		if (k == 1) {
-			return values.stream().map(List::of).collect(Collectors.toUnmodifiableList());
-		}
-
-		return IntStream.range(0, values.size() - k + 1).boxed()
-				.flatMap(i -> {
-					var head = values.subList(i, i + 1);
-					return kCombinations(k - 1, values.subList(i + 1, values.size()))
-							.stream()
-							.map(tail -> Stream.concat(head.stream(), tail.stream()).collect(Collectors.toUnmodifiableList()));
-				})
-				.collect(Collectors.toUnmodifiableList());
+		return combinations;
 	}
 
 	record Tuple(long v1, long v2) {
