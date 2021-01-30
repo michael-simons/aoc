@@ -1,0 +1,10 @@
+:tags: JEP384, combinations
+
+== https://adventofcode.com/2020/day/9[Encoding Error]
+
+Haters gonna hate… Just bruteforcing my way through it.
+Also: Mind the long comparision… `==` does not equals `equals()`. Especially dangerous when using `var` types.
+
+NOTE: Tested with `java version "15.0.1" 2020-10-20`.
+      Run with: `java --enable-preview --source 15 Solution.java`.
+      Correct solutions are: `50047984` and `5407707`.
