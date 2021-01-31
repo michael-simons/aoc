@@ -8,6 +8,8 @@ Also: Mind the long comparision… `==` does not equals `equals()`. Especially d
 I used an iterative variant here to compute k combinations of n elements.
 It's basically a depth first search for new combinations as explained very nicely https://nickma-readme.medium.com/combinations-and-permutations-with-an-intro-to-backtracking-d940683ea9de[here].
 
+This directory also contains a solution based on https://projectreactor.io[Project Reactor], computing the k-combinations in a lazy fashion.
+
 NOTE: Tested with `java version "15.0.1" 2020-10-20`.
       Run with: `java --enable-preview --source 15 Solution.java`.
       Correct solutions are: `50047984` and `5407707`.
