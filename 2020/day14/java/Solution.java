@@ -139,10 +139,10 @@ public final class Solution {
 
 		return IntStream.range(0, values.size() - k + 1).boxed()
 			.flatMap(i -> {
-				var head = values.subList(i, i + 1);
+				var head = values.get(i);
 				return kCombinations(k - 1, values.subList(i + 1, values.size()))
 					.stream()
-					.map(tail -> Stream.concat(head.stream(), tail.stream()).collect(Collectors.toUnmodifiableList()));
+					.map(tail -> Stream.concat(Stream.of(head), tail.stream()).collect(Collectors.toUnmodifiableList()));
 			})
 			.collect(Collectors.toUnmodifiableList());
 	}
