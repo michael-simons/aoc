@@ -1,0 +1,24 @@
+:tags: JEP384
+
+== https://adventofcode.com/2015/day/2[I Was Told There Would Be No Math]
+
+Very simple math, though.
+The solution is very much written by me, a person biased to object oriented programming, creating types for just everything.
+
+All the attributes of the parcel the elves need to wrap can be attached to a JEP384 Java record:
+
+[source,java]
+----
+record Present(int l, int w, int h) {
+
+    int surfaceArea() {
+        return 2 * (l * w + w * h + h * l);
+    }
+
+    // etc.
+}
+----
+
+NOTE: Tested with `java version "15.0.1" 2020-10-20`.
+      Run with: `java --enable-preview --source 15 Solution.java` or use jbang.
+      Correct solutions are: `1606483` and `3842356`.
