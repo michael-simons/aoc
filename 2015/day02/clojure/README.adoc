@@ -1,0 +1,16 @@
+:tags: JEP384
+
+== https://adventofcode.com/2015/day/2[I Was Told There Would Be No Math]
+
+Run with
+
+[source,bash]
+----
+clj -M solution.clj
+----
+
+Quite a different solution than the Java one.
+Not focussing on a structure but the elements only frees up some brain resources to think what the actual task is.
+
+NOTE: Tested with `1.10.2.774`
+      Correct solutions are: `1606483` and `3842356`.
