@@ -1,0 +1,16 @@
+:tags: reductions, lisp
+
+== https://adventofcode.com/2015/day/1[Not Quite Lisp]
+
+How fitting: The title and my very first Clojure program that actually works.
+I just randomly hit one of the unsolved puzzles.
+
+Run with
+
+[source,bash]
+----
+clj -M solution.clj
+----
+
+NOTE: Tested with `1.10.2.774`
+      Correct solutions are: `74` and `1795`.
