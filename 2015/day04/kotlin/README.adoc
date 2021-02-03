@@ -1,0 +1,14 @@
+:tags: blockchain, hashing
+
+== https://adventofcode.com/2015/day/4[The Ideal Stocking Stuffer]
+
+Haha, I already solved that 2018 on an https://www.innoq.com/de/[INNOQ] event:
+https://github.com/michael-simons/blockchain-playground
+
+[source,bash]
+----
+kotlinc -script solution.kts
+----
+
+NOTE: Tested with `kotlinc-jvm 1.4.21 (JRE 15.0.1+9)`
+      Correct solutions are: `346386` and `9958218`
