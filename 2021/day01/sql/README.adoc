@@ -1,0 +1,18 @@
+:tags: SQL, MariaDB
+
+== https://adventofcode.com/2021/day/1[Sonar Sweep]
+
+Run with:
+
+[source,bash]
+----
+#!/usr/bin/env bash
+set -euo pipefail
+docker run --name maria --volume=$(pwd):/aoc -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=aoc -e MYSQL_PASSWORD=secret -e MYSQL_DATABASE=aoc -d mariadb:10.3 > /dev/null
+sleep 10
+docker exec -w /aoc -it maria /bin/bash -c  "mysql -uaoc -psecret aoc --local-infile=1 < solution.sql"
+docker rm --force maria > /dev/null
+----
+
+NOTE: Tested with `MariaDB-1:10.3.27`
+      Correct solutions are: `1184` and `1158`.
