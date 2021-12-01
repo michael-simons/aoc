@@ -1,0 +1,10 @@
+:tags: bash
+
+== https://adventofcode.com/2021/day/1[Sonar Sweep]
+
+Run with: `./solution.sh input.txt`
+
+To be fair: Star 2 uses `wc` and `awk` and is dead slow ;)
+
+NOTE: Tested with `GNU bash, version 3.2.57(1)-release`
+      Correct solutions are: `1184` and `1158`.
