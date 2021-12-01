@@ -17,7 +17,7 @@ cnt=0
 for ((i=0; i<=num_windows; ++i)); do
     start=$((1+$i))
     end=$((start+2))
-    window=$(awk -v start="$start" -v end="$end" 'NR>=start && NR<=end {s+=$1} END {print s}' $1)
+    window=$(awk -v start="$start" -v end="$end" 'FNR>=start && FNR<=end {s+=$1} END {print s}' $1)
     if [ -n $prev ] && (( window > prev )); then
         cnt=$(($cnt+1))            
     fi
