@@ -2,7 +2,7 @@ WITH words AS (
   SELECT MAP {'one': 1, 'two':2, 'three':3, 'four':4, 'five':5,  'six':6, 'seven':7, 'eight':8, 'nine':9} AS v
 ),
 regex AS (
-  SELECT -- Generate a regex from the words, each word becoming a capturing group, aggregating it to one string, with the | regex op, adding
+  SELECT -- Generate a regex from the words, each word becoming a capturing group, aggregating it to one string, with the | regex op,
          -- adding a group for actual numbers
          list_aggregate(list_transform(map_keys(words.v), k -> '(' || k || ')'), 'string_agg', '|') || '|(\d)'          AS v1,
          -- DuckDB uses RE2, which can't do lookahead regex. Therefor I'm reversing each word, and build with them a similar regex as above
