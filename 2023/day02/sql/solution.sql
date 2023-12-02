@@ -1,5 +1,5 @@
 -- First create a temporary table "games", we'are not gonna solve this in one statement
-CREATE OR REPLACE TABLE games AS 
+CREATE OR REPLACE TABLE games AS
   WITH raw_games AS (
     SELECT -- Extract the game number from the first column, turn it into a numeric ID
            trim(substr(split_part(column0,':', 1), 5))::integer AS id,
@@ -10,7 +10,7 @@ CREATE OR REPLACE TABLE games AS
   ),
   -- Sort the rgb values
   sorted_games AS (
-    SELECT id, 
+    SELECT id,
            -- Extract r, g, b values as struct
            regexp_extract(
              -- Aggregate it into one string again
@@ -20,19 +20,19 @@ CREATE OR REPLACE TABLE games AS
                  -- Flip value and label, so that it becomes label and value
                  list_transform(
                    -- Split the games on the ,
-                   string_split( 
+                   string_split(
                      -- This selects all columns, except the ID colum and applies all the functions around it to all colums
                      columns(* exclude(id)), ','
-                   ),              
+                   ),
                    x -> split_part(trim(x),' ', 2 )|| ' ' || split_part(trim(x),' ', 1)
                  )
-               ), 
+               ),
                'string_agg', ', '
-             ), 
+             ),
              -- Now, "AS v" creates multiple columns named v. When addressiong them, they start at v, v:1, etc...
-             '(?:blue (\d+))?(?:(?:, )?green (\d+))?(?:(?:, )?red (\d+))?', ['b', 'g', 'r']) AS v 
+             '(?:blue (\d+))?(?:(?:, )?green (\d+))?(?:(?:, )?red (\d+))?', ['b', 'g', 'r']) AS v
      FROM raw_games
-   ),   
+   ),
    -- Turn the struct with char or empty values into struct varchar: integer
    rgb_values AS (
      SELECT id, {
@@ -50,21 +50,23 @@ FROM games
 WHERE struct_extract(columns('rgb.*'), 'r') <= 12
   AND struct_extract(columns('rgb.*'), 'g') <= 13
   AND struct_extract(columns('rgb.*'), 'b') <= 14;
-  
+
 -- For Star 2 we need to get the greatest values of an unknown number of columns per row…
 -- I just looked up the column names in the data dictionary and created the select.
-
 .header off
 .mode column
 .output .hlp.sql
+
 WITH col_list AS (
-  SELECT list(column_name) AS v FROM information_schema.columns WHERE column_name <> 'id'
+  SELECT list(column_name) AS v
+  FROM information_schema.columns
+  WHERE column_name <> 'id'
 ),
 cols as (
  SELECT 'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".r'), 'string_agg', ',') || ')' as r,
         'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".g'), 'string_agg', ',') || ')' as g,
         'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".b'), 'string_agg', ',') || ')' as b,
- FROM col_list  
+ FROM col_list
 )
 SELECT 'SELECT sum(' || r || ' * ' || g || ' * ' || b || ') AS ''Star 2'' FROM games' FROM cols;
 

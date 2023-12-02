@@ -24,6 +24,6 @@ numbers AS (
          v2[1] || v3[1]       AS v2
   FROM digits
 )
-SELECT sum(v1::integer) AS part1,
-       sum(v2::integer) AS part2 
+SELECT sum(v1::integer) AS 'Star 1',
+       sum(v2::integer) AS 'Star 2'
 FROM numbers;
