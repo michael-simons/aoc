@@ -47,8 +47,8 @@ CREATE OR REPLACE TABLE games AS
 -- Star 1 is quite easy
 SELECT sum(id) AS 'Star 1'
 FROM games
-WHERE struct_extract(columns('rgb.*'), 'r')  <= 12
-  AND struct_extract(columns('rgb.*'), 'g')  <= 13
+WHERE struct_extract(columns('rgb.*'), 'r') <= 12
+  AND struct_extract(columns('rgb.*'), 'g') <= 13
   AND struct_extract(columns('rgb.*'), 'b') <= 14;
   
 -- For Star 2 we need to get the greatest values of an unknown number of columns per row…
