@@ -29,7 +29,7 @@ CREATE OR REPLACE TABLE games AS
                ), 
                'string_agg', ', '
              ), 
-             -- Now, "AS v" creates multiple columns name v. When addressiong them, they start at v, v:1, etc...
+             -- Now, "AS v" creates multiple columns named v. When addressiong them, they start at v, v:1, etc...
              '(?:blue (\d+))?(?:(?:, )?green (\d+))?(?:(?:, )?red (\d+))?', ['b', 'g', 'r']) AS v 
      FROM raw_games
    ),   
