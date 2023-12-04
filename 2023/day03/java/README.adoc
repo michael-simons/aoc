@@ -1,0 +1,16 @@
+:tags: JEP445, Java
+
+== https://adventofcode.com/2023/day/3[Gear Ratios]
+
+Showcasing JEP 445, https://openjdk.org/jeps/445[Unnamed Classes and Instance Main Methods].
+Took me why to long to think about the window approach so that I don't need to have everything in memory.
+
+Run with:
+
+[source,bash]
+----
+java --enable-preview --source 21 solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "21" 2023-09-19`
+      Correct solutions are: `525181` and `84289137`.
