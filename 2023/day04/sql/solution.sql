@@ -1,5 +1,4 @@
--- The indicator RECURSIVE is required so that a CTE can be referenced 
--- inside itself again
+-- The indicator RECURSIVE is required so that a CTE can be referenced inside itself again
 WITH RECURSIVE input AS (
   -- just reading the input here and massing colum0 into a numeric id and the numbers
   SELECT substr(string_split(column0, ':')[1],5)::integer AS id,
@@ -19,8 +18,7 @@ deck AS (
 ),
 part1 AS (
   -- Just writing down the formula of doubling the points for each winning card
-  SELECT sum(power(2, num_winning_cards-1)::integer) AS v 
-  FROM deck
+  SELECT sum(power(2, num_winning_cards-1)::integer) AS v FROM deck
 ),
 final_deck AS ( 
   -- This is now the recursive query, we start with all entries of the deck
