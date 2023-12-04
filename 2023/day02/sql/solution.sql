@@ -6,7 +6,7 @@ CREATE OR REPLACE TABLE games AS
            -- Select all columns (the games, replacing the "game x" from the first)
            * replace(split_part(column0,':', 2 ) as column0)
     FROM -- Filling up missing columns while reading CSV with nulls
-         read_csv('/dev/stdin', delim=';', null_padding=TRUE, AUTO_DETECT=TRUE)
+         read_csv('/dev/stdin', delim=';', null_padding=True, auto_detect=True)
   ),
   -- Sort the rgb values
   sorted_games AS (

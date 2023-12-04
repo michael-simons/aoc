@@ -1,0 +1,16 @@
+:tags: SQL, DuckDB
+
+== https://adventofcode.com/2023/day/4[Scratchcards]
+
+Recursive SQL, because why not… Albeit, it's a bit slow, but it works well enough.
+Part 1 is blazing fast, though.
+
+Run with:
+
+[source,bash]
+----
+duckdb -c ".read solution.sql" < input.txt
+----
+
+NOTE: Tested with DuckDB `v0.9.2 3c695d7ba9`
+      Correct solutions are: `25651` and `19499881`.
