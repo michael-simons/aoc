@@ -54,9 +54,9 @@ record Line(List<Symbol> symbols, List<Candidate> candidates) {
 
 void main() throws IOException {
 
+	var window = new ArrayDeque<Line>();
 	var partNumbers = new ArrayList<Integer>();
 	var gears = new ArrayList<Symbol>();
-	var window = new ArrayDeque<Line>();
 
 	try (var stdin = new BufferedReader(new InputStreamReader(System.in))) {
 		Line line;
