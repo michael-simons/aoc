@@ -1,14 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-record Symbol(String name, int pos, List<Integer> values) {
 
+record Symbol(String name, int pos, List<Integer> values) {
 	Symbol(String name, int pos) {
 		this(name, pos, new ArrayList<>());
 	}
@@ -17,7 +16,7 @@ record Symbol(String name, int pos, List<Integer> values) {
 record Candidate(int value, int start, int end) {
 }
 
-record Line(String value, List<Symbol> symbols, List<Candidate> candidates) {
+record Line(List<Symbol> symbols, List<Candidate> candidates) {
 	private static final Pattern candiatePattern = Pattern.compile("\\d+");
 	private static final Pattern symbolPattern = Pattern.compile("[^.\\d]");
 
@@ -26,20 +25,17 @@ record Line(String value, List<Symbol> symbols, List<Candidate> candidates) {
 			return null;
 		}
 
-		var line = new Line(src, new ArrayList<>(), new ArrayList<>());
-		var symbols = symbolPattern.matcher(src);
-		while (symbols.find()) {
-			line.symbols.add(new Symbol(symbols.group(), symbols.start()));
-		}
+		var symbols = symbolPattern.matcher(src).results()
+			.map(mr -> new Symbol(mr.group(), mr.start()))
+			.toList();
 
-		var matcher = candiatePattern.matcher(line.value);
-		while (matcher.find()) {
-			var value = Integer.parseInt(matcher.group());
-			var candidate = new Candidate(value, matcher.start() - 1, matcher.end());
-			line.candidates.add(candidate);
-		}
+		var candidates = candiatePattern.matcher(src).results()
+			.map(mr -> {
+				var value = Integer.parseInt(mr.group());
+				return new Candidate(value, mr.start() - 1, mr.end());
+			}).toList();
 
-		return line;
+		return new Line(symbols, candidates);
 	}
 
 	List<Integer> findAdjacent(Line prior) {
@@ -56,7 +52,7 @@ record Line(String value, List<Symbol> symbols, List<Candidate> candidates) {
 	}
 }
 
-void main() {
+void main() throws IOException {
 
 	var partNumbers = new ArrayList<Integer>();
 	var gears = new ArrayList<Symbol>();
@@ -83,7 +79,5 @@ void main() {
 			.map(s -> s.values().stream().reduce(1, (v1, v2) -> v1 * v2))
 			.reduce(0, Integer::sum);
 		System.out.println("Star 2: " + star2);
-	} catch (IOException e) {
-		throw new UncheckedIOException(e);
 	}
 }
