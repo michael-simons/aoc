@@ -1,0 +1,14 @@
+:tags: JEP445, Java
+
+== https://adventofcode.com/2023/day/5[If You Give A Seed A Fertilizer]
+
+Today using JEP 453 https://openjdk.org/jeps/453[Structured Concurrency] again because my initial approach was so dead slow and I actually wanted to use the `StructuredTaskScope` for a while. Kept it that way, but eventually used a binary search per range to find the minimum location. Also applying JEP 445, https://openjdk.org/jeps/445[Unnamed Classes and Instance Main Methods] again.
+Both JEPS are in preview, so run like this:
+
+[source,bash]
+----
+java --enable-preview --source 21 solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "21" 2023-09-19`
+      Correct solutions are: `265018614` and `63179500`.
