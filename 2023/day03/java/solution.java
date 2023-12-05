@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-
 record Symbol(String name, int pos, List<Integer> values) {
 	Symbol(String name, int pos) {
 		this(name, pos, new ArrayList<>());
