@@ -18,7 +18,7 @@ input AS (
 pivoted AS (
   PIVOT (SELECT * from input) ON column0 USING any_value(column1)
 ),
--- Then we unnest everyting into a proper "table", finally
+-- Then we unnest everything into a proper "table", finally
 races AS (
   SELECT unnest(part)     AS part,
          unnest(Distance) AS Distance,
