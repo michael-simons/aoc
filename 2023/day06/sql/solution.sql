@@ -30,8 +30,7 @@ races AS (
 -- distance d  = remaining_time * x,  leading to x^2 -  tx + d =  0. The rounded
 -- solutions to  those are the  minimum and maximum  time values of  pushing the
 -- button that lead to  a better result. If it is exactly the  same value as the
--- result, one  one must  subtract 1 from  the difference to  get the  number of
--- possibilities.
+-- result, subtract 1 from the  difference to  get the  number of possibilities.
 args AS (
   SELECT part, distance, time,
          -(-Time/2)                      AS v1,
