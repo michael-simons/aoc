@@ -3,11 +3,10 @@ WITH remapping AS (
          MAP {'A':'a', 'K':'b', 'Q':'c', 'J':'x', 'T':'e', '9':'f', '8':'g', '7':'h', '6':'i', '5':'j', '4':'l', '3':'m', '2':'n'} AS o2
 ),
 input0 AS (
-  SELECT column1::integer AS bid,
-         list_aggregate(list_transform(string_split(column0, ''), x -> r.o1[x][1]),'string_agg', '') AS order_part1,
-         list_aggregate(list_transform(string_split(column0, ''), x -> r.o2[x][1]),'string_agg', '') AS order_part2,
-         column0,
-         string_split(column0, '') AS cards
+  SELECT column1::integer                                                        AS bid,
+         string_split(column0, '')                                               AS cards,
+         list_aggregate(list_transform(cards, c -> r.o1[c][1]),'string_agg', '') AS order_part1,
+         list_aggregate(list_transform(cards, c -> r.o2[c][1]),'string_agg', '') AS order_part2,
   FROM read_csv('/dev/stdin', auto_detect=True, delim=' '), remapping r
 ),
 remapped AS ( -- Remaps the card names to values that sort appropriately, also generates new decks
@@ -25,8 +24,8 @@ decks_and_counts AS ( -- Counts the different cards
     SELECT bid, part, order_part1, order_part2, deck, count(*) AS counts
     FROM decks, LATERAL unnest(decks.cards) card
     GROUP BY bid, part, order_part1, order_part2, deck, card
-)
-,aggregated_counts AS ( -- Aggregates all the counts in a list, undoes the exploded cardinality
+),
+aggregated_counts AS ( -- Aggregates all the counts in a list, undoes the exploded cardinality
     SELECT bid, part, order_part1, order_part2, deck,
            list_reverse_sort(list(greatest(counts / cardinality(r.o1), counts % cardinality(r.o1)))) AS counts
     FROM decks_and_counts, remapping r
