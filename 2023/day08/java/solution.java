@@ -33,8 +33,7 @@ static Map<Long, Long> primeFactorization(long number) {
 	while (z.compareTo(BigInteger.ONE) >= 1) {
 		var prime = BigInteger.TWO;
 		BigInteger factor = null;
-		var cmp = prime.pow(2).compareTo(z);
-		while (cmp <= 0 && factor == null) {
+		while (prime.pow(2).compareTo(z) <= 0 && factor == null) {
 			if (z.remainder(prime).equals(BigInteger.ZERO)) {
 				factor = prime;
 			} else {
