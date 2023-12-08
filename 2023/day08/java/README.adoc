@@ -1,0 +1,13 @@
+:tags: JEP453, JEP445, Java
+
+== https://adventofcode.com/2023/day/8[Haunted Wasteland]
+
+Tried to wait out to find the solution for part 2, observed that the paths were going in circles, used my brain and implemented a prime factorization based on `BigIntegers` to compute the https://en.wikipedia.org/wiki/Least_common_multiple[Lcm] based on the primes of the highest order. Applied https://openjdk.org/jeps/453[Structured Concurrency] again because it's nice.
+
+[source,bash]
+----
+java --enable-preview --source 21 solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "21" 2023-09-19`
+      Correct solutions are: `18113` and `12315788159977`.
