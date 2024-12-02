@@ -6,7 +6,7 @@ CREATE OR REPLACE TABLE games AS
            -- Select all columns (the games, replacing the "game x" from the first)
            * replace(split_part(column0,':', 2 ) as column0)
     FROM -- Filling up missing columns while reading CSV with nulls
-         read_csv('/dev/stdin', delim=';', null_padding=True, auto_detect=True)
+         read_csv('/dev/stdin', delim=';', null_padding=True, auto_detect=True, header=false)
   ),
   -- Sort the rgb values
   sorted_games AS (
@@ -51,26 +51,13 @@ WHERE struct_extract(columns('rgb.*'), 'r') <= 12
   AND struct_extract(columns('rgb.*'), 'g') <= 13
   AND struct_extract(columns('rgb.*'), 'b') <= 14;
 
--- For Star 2 we need to get the greatest values of an unknown number of columns per row…
--- I just looked up the column names in the data dictionary and created the select.
-.header off
-.mode column
-.output .hlp.sql
-
-WITH col_list AS (
-  SELECT list(column_name) AS v
-  FROM information_schema.columns
-  WHERE column_name <> 'id'
-),
-cols as (
- SELECT 'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".r'), 'string_agg', ',') || ')' as r,
-        'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".g'), 'string_agg', ',') || ')' as g,
-        'greatest(' || list_aggregate(list_transform(v, c -> '"' || c || '".b'), 'string_agg', ',') || ')' as b,
- FROM col_list
-)
-SELECT 'SELECT sum(' || r || ' * ' || g || ' * ' || b || ') AS ''Star 2'' FROM games' FROM cols;
-
-.header on
-.mode duckbox
-.output
-.read .hlp.sql
+-- Start 2 uses dynamic column expressions
+WITH 
+  all_columns AS (SELECT unnest(columns(c -> c LIKE 'rgb%')) FROM games),
+  greatest_values AS (
+    SELECT greatest(*columns('r')) AS r,  
+           greatest(*columns('g')) as g, 
+           greatest(*columns('b')) as b 
+    FROM all_columns
+  )
+SELECT sum(r*g*b) AS 'Start 2' FROM greatest_values;
