@@ -13,11 +13,11 @@ digits AS (
   SELECT -- Part one, get only the numbers from the input, easy
          list_filter(string_split(column0, ''), x -> TRY_CAST(x AS INTEGER) IS NOT NULL)      AS v1,
          -- Part two: Search for number words from the start
-         list_transform(regexp_extract_all(column0, regex.v1), x -> ifnull(words.v[x][1], x)) AS v2,
+         list_transform(regexp_extract_all(column0, regex.v1), x -> ifnull(words.v[x][1], x::INTEGER)) AS v2,
          -- and search for number words from the end, see above, reversing the input string,
          -- using the reversed regex and also reversing the returned list
-         list_transform(regexp_extract_all(reverse(column0), regex.v2), x -> ifnull(words.v[reverse(x)][1], x)) AS v3
-  FROM words, regex, read_csv_auto('/dev/stdin')
+         list_transform(regexp_extract_all(reverse(column0), regex.v2), x -> ifnull(words.v[reverse(x)][1], x::INTEGER)) AS v3
+  FROM words, regex, read_csv_auto('/dev/stdin', header=false)
 ),
 numbers AS (
   SELECT v1[1] || v1[len(v1)] AS v1,

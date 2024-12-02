@@ -4,7 +4,7 @@ WITH RECURSIVE input AS (
   SELECT substr(string_split(column0, ':')[1],5)::integer AS id,
          substr(column0, strpos(column0, ':') + 1)        AS column0,
          column1
-  FROM read_csv('/dev/stdin', delim='|', auto_detect=True)
+  FROM read_csv('/dev/stdin', delim='|', auto_detect=True, header=false)
 ),
 deck AS (
   -- Splitting the winning numbers and the numbers at hands into list, computing intersection

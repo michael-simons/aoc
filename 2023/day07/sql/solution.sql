@@ -15,9 +15,9 @@ remapped AS ( -- Remaps the card names to values that sort appropriately, also g
   FROM input0, remapping r
 ),
 decks AS ( -- Unnests the the lists of cards for each part, joining them together for a simple, groupable deck
-  SELECT bid, games.part.name as part, order_part1, order_part2,
-         list_aggregate(games.part.cards, 'string_agg', '') as deck,
-         games.part.cards AS cards
+  SELECT bid, games.unnest.name as part, order_part1, order_part2,
+         list_aggregate(games.unnest.cards, 'string_agg', '') as deck,
+         games.unnest.cards AS cards
   FROM remapped, LATERAL unnest(remapped.part) games
 ),
 decks_and_counts AS ( -- Counts the different cards

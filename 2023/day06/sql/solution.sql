@@ -1,7 +1,7 @@
 -- Column0 are the labels, column1 the values, which we split into a list of chars
 WITH input0 AS (
   SELECT * replace(list_filter(string_split(column1, ' '), x -> x <> '') AS column1)
-  FROM read_csv('/dev/stdin', auto_detect=True, delim=':')
+  FROM read_csv('/dev/stdin', auto_detect=True, delim=':', header=false)
 ),
 -- We transform the  strings into integers for  part one, and add  one list item
 -- with the strings joined together first than turned into a string. We also add
