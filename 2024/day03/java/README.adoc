@@ -1,0 +1,32 @@
+:tags: JEP473, JEP477, Java
+
+== https://adventofcode.com/2024/day/3[Mull It Over]
+
+The task was not really hard, and the regular expression is also straight forward.
+It becomes interesting when you want to
+
+* read the input only once
+* iterate all the matches only once
+* and get both solutions in one go…
+
+I solved this with
+
+* Using a `BufferedReader` and streaming the lines
+* flat-mapping them using `java.util.regex.Matcher#results` (returning a stream of `MatchResults`), available since *Java 9*
+* Trying out https://openjdk.org/jeps/473[JEP 473: "Stream Gatherers"], will be available from *Java 24*
+* Teeing the result, available since *Java 12*
+
+Stream Gatherers are stateful, intermediate stream operations, carrying a state, which I use to stare skipping the next elements or not
+
+To round this up, I also make use of https://openjdk.org/jeps/477[JEP 477: "Implicitly Declared Classes and Instance Main Methods"], allowing me to condense the usual main-class-dance into a single, parameterless function.
+Also spot the lack of imports: Implicitly declared classes automatically import, on demand, all the public top-level classes and interfaces of the packages exported by the `java.base` module.
+
+Run with:
+
+[source,bash]
+----
+java --enable-preview solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "23.0.1" 2024-10-15`
+      Correct solutions are: `178538786` and `102467299`.
