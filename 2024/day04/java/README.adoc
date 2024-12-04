@@ -1,0 +1,13 @@
+:tags: JEP477, Java
+
+== https://adventofcode.com/2024/day/4[Ceres Search]
+
+Run with:
+
+[source,bash]
+----
+java --enable-preview solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "23.0.1" 2024-10-15`
+      Correct solutions are: `2536` and `1875`.
