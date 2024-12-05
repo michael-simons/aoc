@@ -1,0 +1,16 @@
+:tags: JEP477, JEP456 Java
+
+== https://adventofcode.com/2024/day/5[Print Queue]
+
+Notable: Chaining several collecters with `filtering` and `mapping`, super useful so that one does not have to partition into a map and then create a second stream, plus obviously `teeing` again.
+Note the `_` for an unused argument (https://openjdk.org/jeps/456[JEP 456]).
+
+Run with:
+
+[source,bash]
+----
+java --enable-preview solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "23.0.1" 2024-10-15`
+      Correct solutions are: `4996` and `6311`.
