@@ -9,7 +9,7 @@ record Position(int x, int y, int dx, int dy) {
 	}
 }
 
-static void walk(List<char[]> map, Position position, Predicate<Position> continueOnPosition) {
+void walk(List<char[]> map, Position position, Predicate<Position> continueOnPosition) {
 
 	while (position.x >= 0 && position.x < map.getFirst().length && position.y >= 0 && position.y < map.size()) {
 		if (map.get(position.y)[position.x] == '#') {
