@@ -7,7 +7,7 @@ void main() throws IOException {
 	var updates = new ArrayList<String[]>();
 
 	try (
-		var stdin = new BufferedReader(new InputStreamReader(System.in));
+		var stdin = new BufferedReader(new InputStreamReader(System.in))
 	) {
 		String line;
 		boolean inRules = true;
@@ -50,5 +50,6 @@ void main() throws IOException {
 			Collectors.filtering(Predicate.not(isOrdered), Collectors.mapping(sort, Collectors.summingLong(pickMiddle))),
 			Result::new
 		));
+	assert solution.equals(new Result(143, 123)) : "Sample does not work";
 	System.out.println(solution);
 }

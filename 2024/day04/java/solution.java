@@ -61,6 +61,6 @@ void main() throws IOException {
 			cnt2 += star2.applyAsInt(i, j);
 		}
 	}
-	println("Star 1 " + cnt1);
-	println("Star 2 " + cnt2);
+	assert cnt1 == 18 && cnt2 == 9 : "Sample does not work";
+	println("Result[star1=%d, star2=%d]".formatted(cnt1, cnt2));
 }
