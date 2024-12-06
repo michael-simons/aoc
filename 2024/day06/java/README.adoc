@@ -1,0 +1,11 @@
+== https://adventofcode.com/2024/day/6[Print Queue]
+
+Run with:
+
+[source,bash]
+----
+java --enable-preview solution.java < input.txt
+----
+
+NOTE: Tested with `openjdk version "23.0.1" 2024-10-15`
+      Correct solutions are: `4967` and `1789`.

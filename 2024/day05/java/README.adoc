@@ -2,7 +2,7 @@
 
 == https://adventofcode.com/2024/day/5[Print Queue]
 
-Notable: Chaining several collecters with `filtering` and `mapping`, super useful so that one does not have to partition into a map and then create a second stream, plus obviously `teeing` again.
+Notable: Chaining several collectors with `filtering` and `mapping`, super useful so that one does not have to partition into a map and then create a second stream, plus obviously `teeing` again.
 Note the `_` for an unused argument (https://openjdk.org/jeps/456[JEP 456]).
 
 Run with:
