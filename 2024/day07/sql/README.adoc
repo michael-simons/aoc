@@ -1,0 +1,13 @@
+:tags: SQL, DuckDB, Macros, Recursive CTE
+
+== https://adventofcode.com/2024/day/7[Bridge Repair]
+
+Run with:
+
+[source,bash]
+----
+duckdb -c ".read solution.sql" < input.txt
+----
+
+NOTE: Tested with DuckDB `v1.1.3 19864453f7`
+      Correct solutions are: `14711933466277` and `286580387663654`.
