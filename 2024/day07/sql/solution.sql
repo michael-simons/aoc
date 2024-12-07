@@ -1,18 +1,17 @@
 CREATE OR REPLACE FUNCTION solutions(p_operators) AS TABLE
-  WITH RECURSIVE solver(result, idx, operands, op, last_result) AS (
-    SELECT result, 1, operands, '', operands[1]
+  WITH RECURSIVE solver(result, operands, last_result) AS (
+    SELECT result, operands[2:], operands[1]
     FROM query_table('input')
     UNION ALL
-    SELECT result, idx + 1 AS next_idx,
-           operands, operators.value AS current_op,
-           CASE current_op
-             WHEN '+' THEN last_result + operands[next_idx] 
-             WHEN '*' THEN last_result * operands[next_idx] 
-             ELSE cast(last_result || operands[next_idx] AS bigint)
+    SELECT result, operands[2:],
+           CASE operator
+             WHEN '+' THEN last_result + operands[1] 
+             WHEN '*' THEN last_result * operands[1] 
+             ELSE cast(last_result || operands[1] AS bigint)
           END AS next_value
-    FROM solver, unnest(p_operators) AS operators(value)
-    WHERE next_idx <= length(operands)
-     AND next_value <= result
+    FROM solver, unnest(p_operators) AS _(operator)
+    WHERE length(operands) != 0
+      AND next_value <= result
   )
   SELECT sum(DISTINCT result) FROM solver WHERE last_result = result;
 
