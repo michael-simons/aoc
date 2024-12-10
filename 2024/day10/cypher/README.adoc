@@ -1,0 +1,16 @@
+:tags: Cypher, Neo4j, Graph, Shortest path
+
+== https://adventofcode.com/2024/day/10[Hoof It]
+
+Run with:
+
+[source,bash]
+----
+CONTAINER=$(docker run -d  -v `pwd`:/var/lib/neo4j/import -e 'NEO4J_AUTH=none' neo4j:5.26) && \
+  sleep 5s && \
+  docker exec --interactive $CONTAINER cypher-shell -u neo4j < solution.cypher && \
+  docker rm -f $CONTAINER > /dev/null
+----
+
+NOTE: Tested with Neo4j `5.26.0`
+      Correct solutions are: `624` and `1483`.
